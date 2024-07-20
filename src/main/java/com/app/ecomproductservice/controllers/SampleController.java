@@ -1,4 +1,4 @@
-package com.app.ecomproductservice.controller;
+package com.app.ecomproductservice.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

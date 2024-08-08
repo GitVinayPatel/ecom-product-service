@@ -2,10 +2,9 @@ package com.app.ecomproductservice.controllers;
 
 import com.app.ecomproductservice.modles.Product;
 import com.app.ecomproductservice.services.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,14 +20,33 @@ public class productController {
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable("id") Long id){
-        return productService.getSingleProducts(id);
+    public ResponseEntity<Product> getProduct(@PathVariable("id") Long id){
+        ResponseEntity<Product> responseEntity = new ResponseEntity<>(productService.getSingleProducts(id), HttpStatus.OK);
+        return responseEntity;
     }
 
     @GetMapping()
     public List<Product> getAllProducts(){
         return productService.getAllProducts();
     }
+
+    @DeleteMapping("/{id}")
+    public Product deleteProduct(@PathVariable("id") Long id)
+    {
+        return productService.removeProduct(id);
+    }
+
+    @PatchMapping("/{id}")
+    public Product updateProduct(@PathVariable("id") Long id, @RequestBody  Product product){
+        return productService.updateProduct(id, product);
+    }
+
+    @PutMapping("/{id}")
+    public Product replcaeProduct(@PathVariable("id") Long id, @RequestBody  Product product){
+        return new Product();
+    }
+
+
 
 
 }

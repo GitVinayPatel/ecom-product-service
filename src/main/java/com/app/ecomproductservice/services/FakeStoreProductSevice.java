@@ -1,6 +1,7 @@
 package com.app.ecomproductservice.services;
 
-import com.app.ecomproductservice.FakeStoreDTO.FakeStoreProductDTO;
+import com.app.ecomproductservice.DTOs.FakeStoreProductDTO;
+import com.app.ecomproductservice.exception.ProductNotFoundException;
 import com.app.ecomproductservice.modles.Category;
 import com.app.ecomproductservice.modles.Product;
 import org.springframework.http.HttpMethod;
@@ -10,9 +11,7 @@ import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class FakeStoreProductSevice implements ProductService {
@@ -25,9 +24,13 @@ public class FakeStoreProductSevice implements ProductService {
     }
 
     @Override
-    public Product getSingleProducts(Long id) {
+    public Product getSingleProducts(Long id) throws ProductNotFoundException {
         FakeStoreProductDTO fakeStoreProductDTO = restTemplate.getForObject("https://fakestoreapi.com/products/" + id,
                 FakeStoreProductDTO.class);
+
+        if(fakeStoreProductDTO ==null){
+            throw new ProductNotFoundException("Product with id"+ id +"dosen't exist");
+        }
         return productMapper(fakeStoreProductDTO);
     }
 

@@ -1,5 +1,6 @@
 package com.app.ecomproductservice.controllers;
 
+import com.app.ecomproductservice.exception.ProductNotFoundException;
 import com.app.ecomproductservice.modles.Product;
 import com.app.ecomproductservice.services.ProductService;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class productController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable("id") Long id){
+    public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) throws ProductNotFoundException {
         ResponseEntity<Product> responseEntity = new ResponseEntity<>(productService.getSingleProducts(id), HttpStatus.OK);
         return responseEntity;
     }
@@ -46,6 +47,15 @@ public class productController {
         return new Product();
     }
 
+    @ExceptionHandler(ArithmeticException.class)
+    public ResponseEntity<String> handleArthimeticException()
+    {
+        ResponseEntity<String> response = new ResponseEntity<>(
+                "Something went wrong, coming from controller",
+                HttpStatus.BAD_REQUEST
+        );
+        return response;
+    }
 
 
 
